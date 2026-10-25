@@ -1,6 +1,6 @@
 -- =====================================================================
 -- STUDENT MEMORIES & ANONYMOUS MESSAGES PLATFORM
--- Supabase PostgreSQL Database Schema & Security Policies
+-- Supabase PostgreSQL Database Schema & Security Policies (Idempotent)
 -- =====================================================================
 
 -- 1. EXTENSIONS
@@ -48,7 +48,6 @@ CREATE TABLE IF NOT EXISTS public.messages (
 CREATE INDEX IF NOT EXISTS idx_messages_recipient_student ON public.messages(recipient_student_id, created_at DESC);
 
 -- 5. SECURE PUBLIC VIEW FOR STUDENTS (Does NOT expose pin_code)
--- This view allows frontend clients to list students without ever seeing their 6-digit PIN.
 CREATE OR REPLACE VIEW public.public_students AS
 SELECT
     id,
@@ -63,7 +62,6 @@ SELECT
 FROM public.students;
 
 -- 6. RPC: VERIFY STUDENT PIN SECURELY
--- Returns true if pin matches, false if not, without exposing the pin to the client.
 CREATE OR REPLACE FUNCTION public.verify_student_pin(
     p_student_id UUID,
     p_pin TEXT
@@ -84,7 +82,6 @@ END;
 $$;
 
 -- 7. RPC: GET VERIFIED MESSAGES FOR A STUDENT
--- Only delivers the messages if the correct 6-digit PIN is provided.
 CREATE OR REPLACE FUNCTION public.get_verified_messages(
     p_student_id UUID,
     p_pin TEXT
@@ -125,40 +122,39 @@ ALTER TABLE public.students ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 
 -- GROUPS POLICIES:
--- Anyone can view groups (required to validate group code during registration)
+DROP POLICY IF EXISTS "Allow public read access to groups" ON public.groups;
 CREATE POLICY "Allow public read access to groups"
     ON public.groups FOR SELECT
     TO anon, authenticated
     USING (true);
 
 -- STUDENTS POLICIES:
--- Anyone can read student records (for cards page and verification)
+DROP POLICY IF EXISTS "Allow public read access to students" ON public.students;
 CREATE POLICY "Allow public read access to students"
     ON public.students FOR SELECT
     TO anon, authenticated
     USING (true);
 
--- Anyone can insert a new student (for registration)
+DROP POLICY IF EXISTS "Allow public insert of students" ON public.students;
 CREATE POLICY "Allow public insert of students"
     ON public.students FOR INSERT
     TO anon, authenticated
     WITH CHECK (true);
 
 -- MESSAGES POLICIES:
--- Anyone can send an anonymous message
+DROP POLICY IF EXISTS "Allow public insert of messages" ON public.messages;
 CREATE POLICY "Allow public insert of messages"
     ON public.messages FOR INSERT
     TO anon, authenticated
     WITH CHECK (true);
 
--- Allow reading messages (protected at application level and through RPC)
+DROP POLICY IF EXISTS "Allow read messages for recipient" ON public.messages;
 CREATE POLICY "Allow read messages for recipient"
     ON public.messages FOR SELECT
     TO anon, authenticated
     USING (true);
 
 -- 9. STORAGE BUCKET CONFIGURATION
--- Execute this to create the public bucket for student card photos:
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
     'student-photos',
@@ -173,18 +169,19 @@ ON CONFLICT (id) DO UPDATE SET
     allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
 
 -- STORAGE POLICIES:
+DROP POLICY IF EXISTS "Public Access To Student Photos" ON storage.objects;
 CREATE POLICY "Public Access To Student Photos"
     ON storage.objects FOR SELECT
     TO anon, authenticated
     USING (bucket_id = 'student-photos');
 
+DROP POLICY IF EXISTS "Public Upload To Student Photos" ON storage.objects;
 CREATE POLICY "Public Upload To Student Photos"
     ON storage.objects FOR INSERT
     TO anon, authenticated
     WITH CHECK (bucket_id = 'student-photos');
 
 -- 10. INITIAL SAMPLE SEED DATA
--- Insert allowed batch groups (FRONT-469 and FRONT-468)
 INSERT INTO public.groups (name, group_code)
 VALUES 
     ('Front-End Development Cohort 469', 'FRONT-469'),
