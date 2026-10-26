@@ -81,8 +81,12 @@ export const AdminDashboardPage = () => {
 
     try {
       setDeletingId(studentId);
-      await deleteStudentAdmin(studentId);
-      setStudents((prev) => prev.filter((s) => s.id !== studentId));
+      const success = await deleteStudentAdmin(studentId);
+      if (success) {
+        setStudents((prev) => prev.filter((s) => s.id !== studentId));
+      } else {
+        alert('Could not delete student. Please verify Supabase delete permissions.');
+      }
     } catch (err) {
       console.error('Failed to delete student:', err);
       alert('Could not delete student: ' + err.message);

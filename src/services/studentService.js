@@ -425,16 +425,39 @@ export const deleteStudentAdmin = async (studentId) => {
   if (!studentId) return false;
 
   if (isSupabaseConfigured && supabase) {
-    const { error } = await supabase
+    // 1. Try atomic RPC if created
+    try {
+      const { data: rpcSuccess, error: rpcError } = await supabase.rpc('delete_student_admin', {
+        p_student_id: studentId,
+      });
+      if (!rpcError && rpcSuccess) {
+        return true;
+      }
+    } catch {
+      // fallback to direct delete
+    }
+
+    // 2. Delete related messages first
+    try {
+      await supabase
+        .from('messages')
+        .delete()
+        .eq('recipient_student_id', studentId);
+    } catch {
+      // ignore
+    }
+
+    // 3. Delete student record
+    const { error, count } = await supabase
       .from('students')
-      .delete()
+      .delete({ count: 'exact' })
       .eq('id', studentId);
 
     if (error) {
       console.error('Error deleting student:', error);
       throw error;
     }
-    return true;
+    return count > 0;
   }
 
   // Mock implementation

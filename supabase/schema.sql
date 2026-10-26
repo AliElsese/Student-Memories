@@ -141,6 +141,12 @@ CREATE POLICY "Allow public insert of students"
     TO anon, authenticated
     WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Allow public delete of students" ON public.students;
+CREATE POLICY "Allow public delete of students"
+    ON public.students FOR DELETE
+    TO anon, authenticated
+    USING (true);
+
 -- MESSAGES POLICIES:
 DROP POLICY IF EXISTS "Allow public insert of messages" ON public.messages;
 CREATE POLICY "Allow public insert of messages"
@@ -153,6 +159,26 @@ CREATE POLICY "Allow read messages for recipient"
     ON public.messages FOR SELECT
     TO anon, authenticated
     USING (true);
+
+DROP POLICY IF EXISTS "Allow public delete of messages" ON public.messages;
+CREATE POLICY "Allow public delete of messages"
+    ON public.messages FOR DELETE
+    TO anon, authenticated
+    USING (true);
+
+-- RPC FOR CLEAN ADMIN CASCADE DELETION
+CREATE OR REPLACE FUNCTION public.delete_student_admin(p_student_id UUID)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    DELETE FROM public.messages WHERE recipient_student_id = p_student_id;
+    DELETE FROM public.students WHERE id = p_student_id;
+    RETURN true;
+END;
+$$;
 
 -- 9. STORAGE BUCKET CONFIGURATION
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
