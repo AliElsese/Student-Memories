@@ -41,18 +41,10 @@ export const RegisterPage = () => {
     groupCode: Yup.string()
       .trim()
       .required(t('valGroupRequired'))
-      .test('check-allowed-group-code', t('valGroupInvalid'), async (value) => {
+      .test('check-allowed-group-code', t('valGroupInvalid'), (value) => {
         if (!value) return false;
         const normalized = value.trim().toUpperCase();
-        if (!ALLOWED_GROUP_CODES.includes(normalized)) {
-          return false;
-        }
-        try {
-          const group = await getGroupByCode(normalized);
-          return Boolean(group);
-        } catch {
-          return false;
-        }
+        return ALLOWED_GROUP_CODES.includes(normalized);
       }),
     courseStartDate: Yup.date().required(t('valStartRequired')),
     courseEndDate: Yup.date()
@@ -94,7 +86,7 @@ export const RegisterPage = () => {
         // 1. Verify group again to retrieve its ID
         const group = await getGroupByCode(values.groupCode);
         if (!group) {
-          setSubmitError(t('valGroupInvalid'));
+          setSubmitError(t('valGroupDbNotFound'));
           setSubmitting(false);
           return;
         }

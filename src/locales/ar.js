@@ -45,6 +45,7 @@ export const ar = {
   valEmojiRequired: "يرجى اختيار إيموجي يمثل شخصيتك",
   valGroupRequired: "رمز الدفعة مطلوب",
   valGroupInvalid: "رمز الدفعة غير صحيح. يُقبل فقط كود FRONT-475 أو FRONT-469 أو FRONT-468.",
+  valGroupDbNotFound: "رمز الدفعة معتمد، لكنه غير مضاف بعد في جدول الدفعات (groups) في Supabase.",
   valStartRequired: "تاريخ بداية الدورة مطلوب",
   valEndRequired: "تاريخ نهاية الدورة مطلوب",
   valEndBeforeStart: "لا يمكن أن يكون تاريخ النهاية أسبق من البداية",

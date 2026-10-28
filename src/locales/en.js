@@ -45,6 +45,7 @@ export const en = {
   valEmojiRequired: "Please pick a personality emoji",
   valGroupRequired: "Group code is required",
   valGroupInvalid: "Invalid batch code. Only FRONT-475, FRONT-469, or FRONT-468 are accepted.",
+  valGroupDbNotFound: "Batch code is recognized, but has not been added to your Supabase groups table yet.",
   valStartRequired: "Course start date is required",
   valEndRequired: "Course end date is required",
   valEndBeforeStart: "End date cannot be earlier than start date",
