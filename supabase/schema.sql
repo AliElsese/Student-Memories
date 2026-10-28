@@ -210,6 +210,7 @@ CREATE POLICY "Public Upload To Student Photos"
 -- 10. INITIAL SAMPLE SEED DATA
 INSERT INTO public.groups (name, group_code)
 VALUES 
+    ('Front-End Development Cohort 475', 'FRONT-475'),
     ('Front-End Development Cohort 469', 'FRONT-469'),
     ('Front-End Development Cohort 468', 'FRONT-468')
 ON CONFLICT (group_code) DO NOTHING;

@@ -1,7 +1,7 @@
 import { supabase, isSupabaseConfigured } from './supabaseClient.js';
 
 // Strictly allowed group codes
-export const ALLOWED_GROUP_CODES = ['FRONT-469', 'FRONT-468'];
+export const ALLOWED_GROUP_CODES = ['FRONT-469', 'FRONT-468', 'FRONT-475'];
 
 // Default mock groups for offline/local testing
 const DEFAULT_MOCK_GROUPS = [
@@ -17,6 +17,12 @@ const DEFAULT_MOCK_GROUPS = [
     group_code: 'FRONT-468',
     created_at: '2026-01-15T00:00:00Z',
   },
+  {
+    id: 'grp-front-475',
+    name: 'Front-End Development Cohort 475',
+    group_code: 'FRONT-475',
+    created_at: '2026-02-01T00:00:00Z',
+  },
 ];
 
 const getStoredMockGroups = () => {
@@ -25,9 +31,19 @@ const getStoredMockGroups = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Ensure FRONT-468 and FRONT-469 exist
-        const hasAllowed = parsed.some(g => ALLOWED_GROUP_CODES.includes(g.group_code?.toUpperCase()));
-        if (hasAllowed) return parsed;
+        if (Array.isArray(parsed)) {
+          let updated = false;
+          DEFAULT_MOCK_GROUPS.forEach((dg) => {
+            if (!parsed.some((g) => g.group_code?.toUpperCase() === dg.group_code.toUpperCase())) {
+              parsed.push(dg);
+              updated = true;
+            }
+          });
+          if (updated) {
+            localStorage.setItem('mock_groups', JSON.stringify(parsed));
+          }
+          return parsed;
+        }
       } catch {
         // fallback
       }
@@ -46,7 +62,7 @@ export const getGroupByCode = async (code) => {
   if (!code) return null;
   const cleanCode = code.trim().toUpperCase();
 
-  // Strictly allow only FRONT-469 or FRONT-468
+  // Strictly allow only registered batch codes
   if (!ALLOWED_GROUP_CODES.includes(cleanCode)) {
     return null;
   }
@@ -62,7 +78,31 @@ export const getGroupByCode = async (code) => {
       console.error('Error fetching group by code:', error);
       throw error;
     }
-    return data;
+    if (data) {
+      return data;
+    }
+
+    // If allowed group does not exist yet in Supabase, attempt to auto-create it
+    const defaultGroup = DEFAULT_MOCK_GROUPS.find(
+      (g) => g.group_code.toUpperCase() === cleanCode
+    );
+    if (defaultGroup) {
+      try {
+        const { data: insertedGroup, error: insertError } = await supabase
+          .from('groups')
+          .insert([{ name: defaultGroup.name, group_code: defaultGroup.group_code }])
+          .select('*')
+          .single();
+
+        if (!insertError && insertedGroup) {
+          return insertedGroup;
+        }
+      } catch {
+        // If RLS prevents anon insert, fallback to null
+      }
+    }
+
+    return null;
   }
 
   // Mock implementation

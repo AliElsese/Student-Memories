@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
-import { getGroupByCode } from '../services/groupService.js';
+import { getGroupByCode, ALLOWED_GROUP_CODES } from '../services/groupService.js';
 import { uploadStudentPhoto, registerStudent } from '../services/studentService.js';
 import { FormInput } from '../components/forms/FormInput.jsx';
 import { PhotoUploader } from '../components/forms/PhotoUploader.jsx';
@@ -34,7 +34,9 @@ export const RegisterPage = () => {
       .trim()
       .min(3, t('valNameMin'))
       .required(t('valNameRequired')),
-    nickname: Yup.string().trim().nullable(),
+    nickname: Yup.string()
+      .trim()
+      .required(t('valNicknameRequired')),
     personalityEmoji: Yup.string().required(t('valEmojiRequired')),
     groupCode: Yup.string()
       .trim()
@@ -42,7 +44,7 @@ export const RegisterPage = () => {
       .test('check-allowed-group-code', t('valGroupInvalid'), async (value) => {
         if (!value) return false;
         const normalized = value.trim().toUpperCase();
-        if (normalized !== 'FRONT-469' && normalized !== 'FRONT-468') {
+        if (!ALLOWED_GROUP_CODES.includes(normalized)) {
           return false;
         }
         try {
@@ -202,6 +204,7 @@ export const RegisterPage = () => {
               placeholder={t('nicknamePlaceholder')}
               hint={t('nicknameHint')}
               icon={Smile}
+              required
               value={formik.values.nickname}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
