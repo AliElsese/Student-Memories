@@ -55,7 +55,6 @@ export const PhotoUploader = ({
 
   return (
     <div className="w-full flex flex-col gap-2">
-      {/* Label and Clear Explanation Requirement */}
       <div className="flex flex-col gap-1">
         <label className="text-xs sm:text-sm font-semibold text-slate-200 flex items-center gap-1.5">
           <Camera className="w-4 h-4 text-purple-400" />
@@ -63,7 +62,6 @@ export const PhotoUploader = ({
           <span className="text-pink-400">*</span>
         </label>
         
-        {/* Prominent explanation box as requested in requirements */}
         <div className="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-start gap-2.5">
           <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
           <p className="text-xs text-indigo-200/90 leading-relaxed">
@@ -72,7 +70,6 @@ export const PhotoUploader = ({
         </div>
       </div>
 
-      {/* Upload Zone & Preview */}
       <div className="mt-1">
         {photoPreview ? (
           <div className="relative group w-full max-w-sm mx-auto sm:mx-0 p-2 rounded-3xl glass-card border-2 border-purple-500/30 overflow-hidden flex items-center gap-4">

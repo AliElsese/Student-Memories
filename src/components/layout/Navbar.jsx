@@ -13,7 +13,6 @@ export const Navbar = () => {
     <header className="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-950/70 border-b border-white/10 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
-        {/* Brand / Logo */}
         <Link 
           to="/register" 
           className="flex items-center gap-3 group focus:outline-none"
@@ -36,9 +35,7 @@ export const Navbar = () => {
           </div>
         </Link>
 
-        {/* Action Controls & Navigation */}
         <div className="flex items-center gap-3">
-          {/* Navigation link to Register */}
           <Link
             to="/register"
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
@@ -50,7 +47,6 @@ export const Navbar = () => {
             {t('registerNav')}
           </Link>
 
-          {/* Bilingual Language Switcher */}
           <button
             type="button"
             onClick={toggleLanguage}

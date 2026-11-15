@@ -21,7 +21,6 @@
   }
 }
 
-/* Glassmorphism custom design utilities */
 .glass-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(16px);
@@ -78,7 +77,6 @@
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
 }
 
-/* Custom glowing ambient background elements */
 .ambient-glow {
   position: fixed;
   border-radius: 9999px;
@@ -88,7 +86,6 @@
   opacity: 0.4;
 }
 
-/* Custom Keyframe Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -117,7 +114,6 @@
   animation: shake 0.4s ease-in-out;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

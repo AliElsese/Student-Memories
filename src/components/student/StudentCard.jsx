@@ -27,7 +27,6 @@ export const StudentCard = ({
           : 'glass-card glass-card-hover'
       }`}
     >
-      {/* Special Badge for Scanned Card Owner */}
       {isScannedOwner ? (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
           <Badge variant="gold" icon={Sparkles}>
@@ -42,7 +41,6 @@ export const StudentCard = ({
         </div>
       )}
 
-      {/* Student Photo with Personality Emoji floating badge */}
       <div className="relative mt-2 mb-4 group">
         <div className={`w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden bg-slate-900 shadow-xl transition-transform duration-300 group-hover:scale-105 ${
           isScannedOwner 
@@ -55,7 +53,6 @@ export const StudentCard = ({
             loading="lazy"
             className="w-full h-full object-cover object-center"
             onError={(e) => {
-              // Graceful fallback avatar if image fails to load
               e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
                 full_name
               )}&background=1e1b4b&color=c7d2fe&size=256`;
@@ -63,7 +60,6 @@ export const StudentCard = ({
           />
         </div>
 
-        {/* Central/Floating Personality Emoji Badge */}
         <div 
           className="absolute -bottom-2 -right-2 rtl:-right-auto rtl:-left-2 w-10 h-10 rounded-xl bg-slate-900/90 border border-white/25 shadow-lg flex items-center justify-center text-xl backdrop-blur-md transition-transform group-hover:scale-110"
           title={`Personality Emoji: ${personality_emoji}`}
@@ -72,7 +68,6 @@ export const StudentCard = ({
         </div>
       </div>
 
-      {/* Student Info */}
       <div className="flex flex-col items-center mb-5 w-full px-2">
         <h3 className="font-bold text-base sm:text-lg text-white tracking-tight line-clamp-1">
           {full_name}
@@ -89,10 +84,6 @@ export const StudentCard = ({
         )}
       </div>
 
-      {/* Dynamic Action Button Requirement:
-          - Scanned student -> "Show Messages"
-          - Classmate -> "Send Message"
-      */}
       <div className="w-full mt-auto pt-2">
         {isScannedOwner ? (
           <button

@@ -80,7 +80,6 @@ export const PinVerificationModal = ({
         onClose?.();
       } else {
         setErrorMsg(t('pinErrorIncorrect'));
-        // Focus first box for easy retry
         inputRefs.current[0]?.focus();
       }
     } catch (err) {
@@ -91,7 +90,6 @@ export const PinVerificationModal = ({
     }
   };
 
-  // Auto-submit when all 6 digits are filled
   useEffect(() => {
     if (isPinComplete && !isVerifying) {
       handleSubmit();
@@ -107,7 +105,6 @@ export const PinVerificationModal = ({
       maxWidth="max-w-md"
     >
       <div className="flex flex-col items-center gap-6 py-2">
-        {/* Glowing Lock Badge */}
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-500/20 to-pink-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 shadow-xl shadow-purple-500/10">
           <KeyRound className="w-8 h-8 animate-pulse" />
         </div>
@@ -116,7 +113,6 @@ export const PinVerificationModal = ({
           {t('enterPinPrompt')} ({studentName})
         </p>
 
-        {/* 6 Digit Passcode Input Cells */}
         <div 
           className="flex items-center justify-center gap-2 sm:gap-3 w-full"
           onPaste={handlePaste}
@@ -155,7 +151,6 @@ export const PinVerificationModal = ({
           {t('pinHintRemembered')}
         </p>
 
-        {/* Submit Button */}
         <button
           type="button"
           onClick={handleSubmit}

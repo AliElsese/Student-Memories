@@ -1,5 +1,4 @@
 export const ar = {
-  // Navigation & Header
   appTitle: "ذكريات الطلاب",
   appSubtitle: "بطاقات التخرج التذكارية والرسائل السرية",
   registerNav: "تسجيل طالب جديد",
@@ -7,7 +6,6 @@ export const ar = {
   languageName: "English",
   currentLang: "العربية",
 
-  // Student Registration Page
   regTitle: "تسجيل بطاقة التخرج التذكارية",
   regSubtitle: "سجّل بيانات بطاقتك التذكارية، واحصل على رمز QR فريد للطباعة، واستقبل رسائل سرية ولطيفة من زملائك في الدفعة!",
   photoLabel: "الصورة التذكارية للبطاقة",
@@ -35,7 +33,6 @@ export const ar = {
   submitRegistration: "تسجيل بطاقة ذكرياتي 🎉",
   registering: "جاري حفظ البطاقة وإنشاء الرمز...",
   
-  // Validation Messages
   valPhotoRequired: "يرجى رفع صورتك التذكارية للبطاقة",
   valPhotoSize: "حجم الصورة يجب ألا يتجاوز 5 ميجابايت",
   valPhotoType: "يُسمح فقط بالصور بصيغة JPG أو PNG أو WebP",
@@ -54,7 +51,6 @@ export const ar = {
   valPinConfirmRequired: "يرجى تأكيد الرمز السري",
   valPinMismatch: "تأكيد الرمز السري غير متطابق",
   
-  // Registration Success Celebration
   regSuccessTitle: "تم التسجيل بنجاح! 🎉",
   regSuccessSubtitle: "تم حفظ بطاقتك التذكارية بنجاح تام في سجل التخرج.",
   regCelebrationMessage: "في انتظارك، لا تتأخر! 🎓✨🎉🥳",
@@ -70,7 +66,6 @@ export const ar = {
   registerAnother: "تسجيل طالب آخر",
   qrNoticeUrl: "الرابط المشفر داخل الرمز",
 
-  // Group Cards Page
   groupCardsTitle: "بطاقات ذكريات الدفعة",
   groupCardsSubtitle: "نحتفل بمسيرة تخرجنا وأجمل الذكريات التي جمعتنا سوياً",
   scannedOwnerBadge: "صاحب هذه البطاقة",
@@ -84,7 +79,6 @@ export const ar = {
   groupNotFound: "لم يتم العثور على الطالب أو الدفعة. قد يكون رابط الـ QR غير صالح.",
   backToRegister: "العودة للتسجيل",
   
-  // Send Anonymous Message Modal
   sendModalTitle: "إرسال رسالة مجهولة",
   sendModalSubtitle: "عبّر عن تقديرك، أو اذكر موقفاً جميلاً، أو اترك أمنية ملهمة لزميلك!",
   recipientLabel: "إلى:",
@@ -99,7 +93,6 @@ export const ar = {
   sendAnother: "إرسال رسالة أخرى",
   closeBtn: "إغلاق",
 
-  // Messages Inbox Page
   inboxTitle: "صندوق الرسائل السرية",
   inboxSubtitle: "كلمات التخرج، التمنيات الصادقة، والذكريات الجميلة من رفقاء الدرب",
   totalNotesReceived: "رسالة مستلمة",
@@ -115,7 +108,6 @@ export const ar = {
   pinErrorIncorrect: "الرمز السري غير صحيح. يرجى المحاولة مرة أخرى.",
   pinHintRemembered: "بمجرد الفتح بنجاح، سيتذكر هذا المتصفح وصولك لتتمكن من القراءة بسهولة دون تكرار إدخال الرمز.",
 
-  // Common UI
   loading: "جاري التحميل...",
   error: "حدث خطأ",
   tryAgain: "إعادة المحاولة",
@@ -124,7 +116,6 @@ export const ar = {
   demoModeNotice: "وضع العرض التوضيحي المحلي مفعل. أضف مفاتيح Supabase في ملف .env للربط بقاعدة البيانات الفعلية.",
   footerText: "صُنعت بكل ❤️ للاحتفاء بذكريات الطلاب ودفء الصداقات الجامعية.",
 
-  // Super Admin
   adminNav: "لوحة المشرف",
   adminLoginTitle: "بوابة المشرف العام",
   adminLoginSubtitle: "أدخل بيانات المشرف العام لاستعراض كافة بيانات الطلاب والرموز السرية وبطاقات الـ QR",

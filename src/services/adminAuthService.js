@@ -1,12 +1,8 @@
-// Super Admin Credentials
 const SUPER_ADMIN_EMAIL = 'ali.elsese104@gmail.com';
 const SUPER_ADMIN_PASSWORD = 'Ali10496';
 
 const ADMIN_STORAGE_KEY = 'super_admin_authenticated';
 
-/**
- * Validates super admin credentials and sets session
- */
 export const loginAdmin = (email, password) => {
   const cleanEmail = (email || '').trim().toLowerCase();
   const cleanPass = (password || '').trim();
@@ -25,9 +21,6 @@ export const loginAdmin = (email, password) => {
   return false;
 };
 
-/**
- * Checks if current user is logged in as Super Admin
- */
 export const isAdminAuthenticated = () => {
   try {
     if (typeof localStorage === 'undefined') return false;
@@ -40,15 +33,11 @@ export const isAdminAuthenticated = () => {
   }
 };
 
-/**
- * Clears super admin session
- */
 export const logoutAdmin = () => {
   try {
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem(ADMIN_STORAGE_KEY);
     }
   } catch {
-    // ignore
   }
 };

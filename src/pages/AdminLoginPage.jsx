@@ -12,7 +12,6 @@ export const AdminLoginPage = () => {
   const navigate = useNavigate();
   const [authError, setAuthError] = useState('');
 
-  // If already logged in, redirect immediately to dashboard
   React.useEffect(() => {
     if (isAdminAuthenticated()) {
       navigate('/admin/dashboard', { replace: true });
@@ -53,7 +52,6 @@ export const AdminLoginPage = () => {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         
-        {/* Glowing Shield Icon Header */}
         <div className="text-center mb-8">
           <div className="inline-flex w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-0.5 shadow-xl shadow-purple-500/20 mb-4 animate-scale-up">
             <div className="w-full h-full bg-slate-950/90 rounded-[14px] flex items-center justify-center">
@@ -69,7 +67,6 @@ export const AdminLoginPage = () => {
           </p>
         </div>
 
-        {/* Glassmorphism Login Card */}
         <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/15 shadow-2xl relative">
           <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
             
@@ -130,7 +127,6 @@ export const AdminLoginPage = () => {
             </button>
           </form>
 
-          {/* Quick Credential Hint Box for evaluation */}
           <div className="mt-6 pt-4 border-t border-white/10 text-center">
             <p className="text-[11px] text-slate-400">
               Super Admin: <span className="text-purple-300 font-mono">ali.elsese104@gmail.com</span>
@@ -138,7 +134,6 @@ export const AdminLoginPage = () => {
           </div>
         </div>
 
-        {/* Back Link */}
         <div className="text-center mt-6">
           <Link
             to="/register"

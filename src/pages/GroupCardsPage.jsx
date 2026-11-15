@@ -34,7 +34,6 @@ export const GroupCardsPage = () => {
   const [group, setGroup] = useState(null);
   const [students, setStudents] = useState([]);
 
-  // Modals state
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
@@ -45,7 +44,6 @@ export const GroupCardsPage = () => {
         setLoading(true);
         setError(null);
 
-        // 1. Retrieve the student identified by studentId from URL
         const student = await getStudentById(studentId);
         if (!student) {
           setError(t('groupNotFound'));
@@ -54,14 +52,11 @@ export const GroupCardsPage = () => {
         }
         setScannedStudent(student);
 
-        // 2. Determine which group that student belongs to
         const groupData = await getGroupById(student.group_id);
         setGroup(groupData);
 
-        // 3. Load students belonging to this group only
         const groupStudents = await getStudentsByGroupId(student.group_id);
         
-        // Put the scanned student first in the list for immediate prominence
         const sortedStudents = [...groupStudents].sort((a, b) => {
           if (a.id === studentId) return -1;
           if (b.id === studentId) return 1;
@@ -82,7 +77,6 @@ export const GroupCardsPage = () => {
     }
   }, [studentId, t]);
 
-  // Handle "Show Messages" click on scanned student card
   const handleShowMessages = (student) => {
     if (isStudentVerifiedInBrowser(student.id)) {
       navigate(`/messages/${student.id}`);
@@ -91,7 +85,6 @@ export const GroupCardsPage = () => {
     }
   };
 
-  // Handle "Send Message" click on classmate card
   const handleSendMessage = (classmate) => {
     setSelectedRecipient(classmate);
     setIsMessageModalOpen(true);
@@ -153,7 +146,6 @@ export const GroupCardsPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Group Header Banner */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-purple-500/30 text-xs font-semibold text-purple-300 mb-3 shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -168,7 +160,6 @@ export const GroupCardsPage = () => {
           {t('groupCardsSubtitle')}
         </p>
 
-        {/* Group Stats Chips */}
         <div className="flex flex-wrap items-center justify-center gap-4 mt-5 text-xs text-slate-300">
           <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full glass-card border border-white/10">
             <Users className="w-3.5 h-3.5 text-purple-400" />
@@ -195,7 +186,6 @@ export const GroupCardsPage = () => {
         </div>
       </div>
 
-      {/* Student Cards Grid */}
       {students.length === 0 ? (
         <EmptyState
           icon={Users}
@@ -227,14 +217,12 @@ export const GroupCardsPage = () => {
         </div>
       )}
 
-      {/* Anonymous Message Send Modal */}
       <MessageModal
         isOpen={isMessageModalOpen}
         onClose={() => setIsMessageModalOpen(false)}
         recipient={selectedRecipient}
       />
 
-      {/* Secret PIN Verification Modal for Owner */}
       <PinVerificationModal
         isOpen={isPinModalOpen}
         onClose={() => setIsPinModalOpen(false)}

@@ -1,5 +1,4 @@
 export const en = {
-  // Navigation & Header
   appTitle: "Student Memories",
   appSubtitle: "Commemorative Cards & Secret Notes",
   registerNav: "New Student",
@@ -7,7 +6,6 @@ export const en = {
   languageName: "العربية",
   currentLang: "English",
 
-  // Student Registration Page
   regTitle: "Graduation Memory Card Registration",
   regSubtitle: "Register your graduation memory card, get your unique printable QR code, and receive secret messages from your batch mates!",
   photoLabel: "Commemorative Photo",
@@ -35,7 +33,6 @@ export const en = {
   submitRegistration: "Register My Memory Card 🎉",
   registering: "Creating Your Memory Card...",
   
-  // Validation Messages
   valPhotoRequired: "Please upload your commemorative photo",
   valPhotoSize: "Photo file size must not exceed 5 MB",
   valPhotoType: "Only JPG, PNG, or WebP images are allowed",
@@ -54,7 +51,6 @@ export const en = {
   valPinConfirmRequired: "Please confirm your PIN",
   valPinMismatch: "PIN confirmation does not match",
   
-  // Registration Success Celebration
   regSuccessTitle: "Successfully Registered! 🎉",
   regSuccessSubtitle: "Your graduation commemorative card has been successfully saved.",
   regCelebrationMessage: "Waiting for you, don't be late! 🎓✨🎉🥳",
@@ -70,7 +66,6 @@ export const en = {
   registerAnother: "Register Another Student",
   qrNoticeUrl: "Encoded URL",
 
-  // Group Cards Page
   groupCardsTitle: "Batch Memory Cards",
   groupCardsSubtitle: "Celebrating our graduation journey and unforgettable memories together",
   scannedOwnerBadge: "Scanned Card Owner",
@@ -84,7 +79,6 @@ export const en = {
   groupNotFound: "Student or group not found. The QR link might be invalid.",
   backToRegister: "Back to Registration",
   
-  // Send Anonymous Message Modal
   sendModalTitle: "Send Anonymous Message",
   sendModalSubtitle: "Express your appreciation, share a funny memory, or leave inspiring wishes!",
   recipientLabel: "To:",
@@ -99,7 +93,6 @@ export const en = {
   sendAnother: "Send Another Note",
   closeBtn: "Close",
 
-  // Messages Inbox Page
   inboxTitle: "Secret Messages Inbox",
   inboxSubtitle: "Graduation thoughts, warm wishes, and memorable notes from your friends",
   totalNotesReceived: "Notes Received",
@@ -115,7 +108,6 @@ export const en = {
   pinErrorIncorrect: "Incorrect 6-digit PIN. Please try again.",
   pinHintRemembered: "Once unlocked, this browser will remember your access so you can easily return.",
 
-  // Common UI
   loading: "Loading...",
   error: "Error",
   tryAgain: "Try Again",
@@ -124,7 +116,6 @@ export const en = {
   demoModeNotice: "Running in local preview mode. Add your Supabase credentials to .env to connect to live database.",
   footerText: "Crafted with ❤️ for students, memories, and lifelong friendships.",
 
-  // Super Admin
   adminNav: "Admin Portal",
   adminLoginTitle: "Super Admin Portal",
   adminLoginSubtitle: "Enter super admin credentials to inspect students, PIN codes & QR cards",

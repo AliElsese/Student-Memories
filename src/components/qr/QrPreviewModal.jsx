@@ -17,7 +17,6 @@ export const QrPreviewModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      // Trigger joyful celebration confetti
       try {
         confetti({
           particleCount: 80,
@@ -26,7 +25,6 @@ export const QrPreviewModal = ({
           colors: ['#6366f1', '#a855f7', '#ec4899', '#fbbf24', '#34d399'],
         });
       } catch {
-        // Safe fallback
       }
     }
   }, [isOpen]);
@@ -52,7 +50,6 @@ export const QrPreviewModal = ({
       maxWidth="max-w-md"
     >
       <div className="flex flex-col items-center gap-6">
-        {/* Student Mini Profile Header */}
         <div className="flex items-center gap-3 p-3 rounded-2xl glass-card w-full">
           <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/20 bg-slate-900 shrink-0">
             <img
@@ -78,7 +75,6 @@ export const QrPreviewModal = ({
           </div>
         </div>
 
-        {/* High-Res QR Code Preview & Download */}
         <QrCodeViewer
           studentId={student.id}
           studentName={student.full_name || student.fullName}
@@ -87,7 +83,6 @@ export const QrPreviewModal = ({
           exportSize={1200}
         />
 
-        {/* Navigation Action Buttons */}
         <div className="w-full flex flex-col gap-2.5 pt-2">
           <button
             type="button"

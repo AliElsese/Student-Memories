@@ -1,9 +1,7 @@
 import { supabase, isSupabaseConfigured } from './supabaseClient.js';
 
-// Strictly allowed group codes
 export const ALLOWED_GROUP_CODES = ['FRONT-469', 'FRONT-468', 'FRONT-475'];
 
-// Default mock groups for offline/local testing
 const DEFAULT_MOCK_GROUPS = [
   {
     id: 'grp-front-469',
@@ -45,7 +43,6 @@ const getStoredMockGroups = () => {
           return parsed;
         }
       } catch {
-        // fallback
       }
     }
     try {
@@ -55,14 +52,10 @@ const getStoredMockGroups = () => {
   return DEFAULT_MOCK_GROUPS;
 };
 
-/**
- * Find group by code (case-insensitive)
- */
 export const getGroupByCode = async (code) => {
   if (!code) return null;
   const cleanCode = code.trim().toUpperCase();
 
-  // Strictly allow only registered batch codes
   if (!ALLOWED_GROUP_CODES.includes(cleanCode)) {
     return null;
   }
@@ -82,7 +75,6 @@ export const getGroupByCode = async (code) => {
       return data;
     }
 
-    // If allowed group does not exist yet in Supabase, attempt to auto-create it
     const defaultGroup = DEFAULT_MOCK_GROUPS.find(
       (g) => g.group_code.toUpperCase() === cleanCode
     );
@@ -98,22 +90,17 @@ export const getGroupByCode = async (code) => {
           return insertedGroup;
         }
       } catch {
-        // If RLS prevents anon insert, fallback to null
       }
     }
 
     return null;
   }
 
-  // Mock implementation
   const groups = getStoredMockGroups();
   const found = groups.find((g) => g.group_code.toUpperCase() === cleanCode);
   return found || null;
 };
 
-/**
- * Find group by ID
- */
 export const getGroupById = async (groupId) => {
   if (!groupId) return null;
 
@@ -131,7 +118,6 @@ export const getGroupById = async (groupId) => {
     return data;
   }
 
-  // Mock implementation
   const groups = getStoredMockGroups();
   return groups.find((g) => g.id === groupId) || null;
 };

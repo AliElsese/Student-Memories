@@ -1,12 +1,6 @@
--- =====================================================================
--- STUDENT MEMORIES & ANONYMOUS MESSAGES PLATFORM
--- Supabase PostgreSQL Database Schema & Security Policies (Idempotent)
--- =====================================================================
 
--- 1. EXTENSIONS
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- 2. GROUPS TABLE
 CREATE TABLE IF NOT EXISTS public.groups (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
@@ -14,10 +8,8 @@ CREATE TABLE IF NOT EXISTS public.groups (
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
--- Index for fast lookup by uppercase group_code
 CREATE UNIQUE INDEX IF NOT EXISTS idx_groups_group_code ON public.groups (UPPER(group_code));
 
--- 3. STUDENTS TABLE
 CREATE TABLE IF NOT EXISTS public.students (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     group_id UUID NOT NULL REFERENCES public.groups(id) ON DELETE CASCADE,
@@ -32,11 +24,9 @@ CREATE TABLE IF NOT EXISTS public.students (
     CONSTRAINT course_dates_check CHECK (course_end_date >= course_start_date)
 );
 
--- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_students_group_id ON public.students(group_id);
 CREATE INDEX IF NOT EXISTS idx_students_created_at ON public.students(created_at DESC);
 
--- 4. MESSAGES TABLE
 CREATE TABLE IF NOT EXISTS public.messages (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     recipient_student_id UUID NOT NULL REFERENCES public.students(id) ON DELETE CASCADE,
@@ -44,10 +34,8 @@ CREATE TABLE IF NOT EXISTS public.messages (
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
--- Indexes for fast query of recipient inbox
 CREATE INDEX IF NOT EXISTS idx_messages_recipient_student ON public.messages(recipient_student_id, created_at DESC);
 
--- 5. SECURE PUBLIC VIEW FOR STUDENTS (Does NOT expose pin_code)
 CREATE OR REPLACE VIEW public.public_students AS
 SELECT
     id,
@@ -61,7 +49,6 @@ SELECT
     created_at
 FROM public.students;
 
--- 6. RPC: VERIFY STUDENT PIN SECURELY
 CREATE OR REPLACE FUNCTION public.verify_student_pin(
     p_student_id UUID,
     p_pin TEXT
@@ -81,7 +68,6 @@ BEGIN
 END;
 $$;
 
--- 7. RPC: GET VERIFIED MESSAGES FOR A STUDENT
 CREATE OR REPLACE FUNCTION public.get_verified_messages(
     p_student_id UUID,
     p_pin TEXT
@@ -116,19 +102,16 @@ BEGIN
 END;
 $$;
 
--- 8. ROW LEVEL SECURITY (RLS) POLICIES
 ALTER TABLE public.groups ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.students ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 
--- GROUPS POLICIES:
 DROP POLICY IF EXISTS "Allow public read access to groups" ON public.groups;
 CREATE POLICY "Allow public read access to groups"
     ON public.groups FOR SELECT
     TO anon, authenticated
     USING (true);
 
--- STUDENTS POLICIES:
 DROP POLICY IF EXISTS "Allow public read access to students" ON public.students;
 CREATE POLICY "Allow public read access to students"
     ON public.students FOR SELECT
@@ -147,7 +130,6 @@ CREATE POLICY "Allow public delete of students"
     TO anon, authenticated
     USING (true);
 
--- MESSAGES POLICIES:
 DROP POLICY IF EXISTS "Allow public insert of messages" ON public.messages;
 CREATE POLICY "Allow public insert of messages"
     ON public.messages FOR INSERT
@@ -166,7 +148,6 @@ CREATE POLICY "Allow public delete of messages"
     TO anon, authenticated
     USING (true);
 
--- RPC FOR CLEAN ADMIN CASCADE DELETION
 CREATE OR REPLACE FUNCTION public.delete_student_admin(p_student_id UUID)
 RETURNS BOOLEAN
 LANGUAGE plpgsql
@@ -180,13 +161,12 @@ BEGIN
 END;
 $$;
 
--- 9. STORAGE BUCKET CONFIGURATION
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
     'student-photos',
     'student-photos',
     true,
-    5242880, -- 5 MB limit
+    5242880,
     ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
 )
 ON CONFLICT (id) DO UPDATE SET
@@ -194,7 +174,6 @@ ON CONFLICT (id) DO UPDATE SET
     file_size_limit = 5242880,
     allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
 
--- STORAGE POLICIES:
 DROP POLICY IF EXISTS "Public Access To Student Photos" ON storage.objects;
 CREATE POLICY "Public Access To Student Photos"
     ON storage.objects FOR SELECT
@@ -207,7 +186,6 @@ CREATE POLICY "Public Upload To Student Photos"
     TO anon, authenticated
     WITH CHECK (bucket_id = 'student-photos');
 
--- 10. INITIAL SAMPLE SEED DATA
 INSERT INTO public.groups (name, group_code)
 VALUES 
     ('Front-End Development Cohort 475', 'FRONT-475'),

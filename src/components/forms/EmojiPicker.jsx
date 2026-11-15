@@ -21,7 +21,6 @@ export const EmojiPicker = ({
           <span className="text-pink-400">*</span>
         </label>
         
-        {/* Selected badge preview */}
         {selectedEmoji && (
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/40 text-xs text-purple-200">
             <span>Selected:</span>
@@ -34,7 +33,6 @@ export const EmojiPicker = ({
         {t('personalityEmojiHint')}
       </p>
 
-      {/* Grid of emojis */}
       <div className="p-3 rounded-2xl glass-input border border-white/10 grid grid-cols-6 sm:grid-cols-8 md:grid-cols-12 gap-2">
         {PERSONALITY_EMOJIS.map((emoji) => {
           const isSelected = selectedEmoji === emoji;

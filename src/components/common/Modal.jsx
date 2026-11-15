@@ -17,7 +17,6 @@ export const Modal = ({
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    // Prevent background scrolling while modal is open
     document.body.style.overflow = 'hidden';
 
     return () => {
@@ -40,7 +39,6 @@ export const Modal = ({
         role="dialog"
         aria-modal="true"
       >
-        {/* Close Button */}
         {onClose && (
           <button
             type="button"
@@ -52,7 +50,6 @@ export const Modal = ({
           </button>
         )}
 
-        {/* Modal Header */}
         {(title || subtitle) && (
           <div className="mb-6 pr-8 rtl:pr-0 rtl:pl-8">
             {title && (
@@ -68,7 +65,6 @@ export const Modal = ({
           </div>
         )}
 
-        {/* Modal Content */}
         <div>{children}</div>
       </div>
     </div>

@@ -33,12 +33,10 @@ export const MessagesPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Verification state
   const [isVerified, setIsVerified] = useState(() => isStudentVerifiedInBrowser(studentId));
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
   const [verifiedPin, setVerifiedPin] = useState('');
 
-  // 1. Fetch student info
   useEffect(() => {
     const fetchStudent = async () => {
       try {
@@ -53,7 +51,6 @@ export const MessagesPage = () => {
         }
         setStudent(studentData);
 
-        // Check verification in browser
         const verified = isStudentVerifiedInBrowser(studentId);
         setIsVerified(verified);
 
@@ -61,7 +58,6 @@ export const MessagesPage = () => {
           setIsPinModalOpen(true);
           setLoading(false);
         } else {
-          // If already verified, fetch messages
           await loadMessages(studentId);
         }
       } catch (err) {
@@ -133,7 +129,6 @@ export const MessagesPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Top Navigation & Controls */}
       <div className="flex items-center justify-between gap-4 mb-8">
         <Link
           to={`/cards/${studentId}`}
@@ -156,9 +151,7 @@ export const MessagesPage = () => {
         )}
       </div>
 
-      {/* Recipient Profile & Inbox Header */}
       <div className="glass-card-owner rounded-3xl p-6 sm:p-8 mb-10 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left sm:rtl:text-right">
-        {/* Recipient Photo with Personality Emoji */}
         <div className="relative shrink-0">
           <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-purple-400 shadow-xl bg-slate-900">
             <img
@@ -172,7 +165,6 @@ export const MessagesPage = () => {
           </div>
         </div>
 
-        {/* Info */}
         <div className="flex flex-col flex-grow">
           <div className="inline-flex items-center justify-center sm:justify-start gap-1.5 text-xs text-purple-300 font-semibold mb-1">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
@@ -194,7 +186,6 @@ export const MessagesPage = () => {
           </p>
         </div>
 
-        {/* Message Counter Pill */}
         <div className="p-4 rounded-2xl glass-card border border-white/15 flex flex-col items-center justify-center shrink-0 min-w-[120px]">
           <span className="text-3xl font-extrabold bg-gradient-to-r from-amber-400 to-pink-400 bg-clip-text text-transparent">
             {messages.length}
@@ -205,7 +196,6 @@ export const MessagesPage = () => {
         </div>
       </div>
 
-      {/* Messages List Area */}
       {!isVerified ? (
         <div className="text-center py-12">
           <EmptyState
@@ -249,12 +239,10 @@ export const MessagesPage = () => {
         </div>
       )}
 
-      {/* PIN Verification Modal */}
       <PinVerificationModal
         isOpen={isPinModalOpen}
         onClose={() => {
           setIsPinModalOpen(false);
-          // If modal closed without verification, navigate back to group cards
           if (!isVerified) {
             navigate(`/cards/${studentId}`);
           }

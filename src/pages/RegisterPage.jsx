@@ -28,7 +28,6 @@ export const RegisterPage = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  // Validation Schema using Yup
   const validationSchema = Yup.object().shape({
     fullName: Yup.string()
       .trim()
@@ -75,7 +74,6 @@ export const RegisterPage = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitError('');
 
-      // Manual check for photo
       if (!photoFile) {
         setSubmitError(t('valPhotoRequired'));
         setSubmitting(false);
@@ -83,7 +81,6 @@ export const RegisterPage = () => {
       }
 
       try {
-        // 1. Verify group again to retrieve its ID
         const group = await getGroupByCode(values.groupCode);
         if (!group) {
           setSubmitError(t('valGroupDbNotFound'));
@@ -91,10 +88,8 @@ export const RegisterPage = () => {
           return;
         }
 
-        // 2. Upload photo
         const photoUrl = await uploadStudentPhoto(photoFile);
 
-        // 3. Register student record in Supabase
         const createdStudent = await registerStudent({
           groupId: group.id,
           fullName: values.fullName,
@@ -106,7 +101,6 @@ export const RegisterPage = () => {
           pinCode: values.pinCode,
         });
 
-        // 4. Set state and open QR modal
         setRegisteredStudent({
           ...createdStudent,
           photoUrl,
@@ -142,7 +136,6 @@ export const RegisterPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      {/* Header Banner */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-purple-500/30 text-xs font-semibold text-purple-300 mb-4 shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -156,11 +149,9 @@ export const RegisterPage = () => {
         </p>
       </div>
 
-      {/* Main Registration Card */}
       <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/15 shadow-2xl relative">
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-8">
           
-          {/* Section 1: Commemorative Photo */}
           <div>
             <PhotoUploader
               photoPreview={photoPreview}
@@ -173,7 +164,6 @@ export const RegisterPage = () => {
 
           <div className="h-px bg-white/10 w-full" />
 
-          {/* Section 2: Student Identity */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormInput
               id="fullName"
@@ -205,7 +195,6 @@ export const RegisterPage = () => {
             />
           </div>
 
-          {/* Section 3: Personality Emoji Picker */}
           <div>
             <EmojiPicker
               selectedEmoji={formik.values.personalityEmoji}
@@ -217,7 +206,6 @@ export const RegisterPage = () => {
 
           <div className="h-px bg-white/10 w-full" />
 
-          {/* Section 4: Group & Course Dates */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <FormInput
               id="groupCode"
@@ -265,7 +253,6 @@ export const RegisterPage = () => {
 
           <div className="h-px bg-white/10 w-full" />
 
-          {/* Section 5: Secret 6-Digit PIN */}
           <div className="p-5 rounded-2xl bg-purple-500/10 border border-purple-500/20">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormInput
@@ -303,7 +290,6 @@ export const RegisterPage = () => {
             </div>
           </div>
 
-          {/* Error Message Notification */}
           {submitError && (
             <div className="p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center gap-3 text-rose-300 text-sm">
               <AlertCircle className="w-5 h-5 shrink-0" />
@@ -311,7 +297,6 @@ export const RegisterPage = () => {
             </div>
           )}
 
-          {/* Submit Action Button */}
           <button
             type="submit"
             disabled={formik.isSubmitting}
@@ -332,7 +317,6 @@ export const RegisterPage = () => {
         </form>
       </div>
 
-      {/* Joyful Graduation Celebration Modal (No QR code shown to student) */}
       <RegistrationSuccessModal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}

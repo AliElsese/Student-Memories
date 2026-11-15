@@ -47,9 +47,7 @@ export const QrCodeViewer = ({
 
   return (
     <div className="flex flex-col items-center gap-5 w-full">
-      {/* QR Canvas Container with Frosted Glow Border */}
       <div className="relative p-4 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl group flex flex-col items-center">
-        {/* Subtle decorative corner markers */}
         <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-purple-400 rounded-tl-sm pointer-events-none" />
         <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-purple-400 rounded-tr-sm pointer-events-none" />
         <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-purple-400 rounded-bl-sm pointer-events-none" />
@@ -62,14 +60,12 @@ export const QrCodeViewer = ({
           />
         </div>
 
-        {/* Small floating badge */}
         <div className="mt-3 flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-white/10 text-[11px] text-slate-300">
           <Sparkles className="w-3 h-3 text-amber-400" />
           <span>High-Res Scannable QR Code</span>
         </div>
       </div>
 
-      {/* URL Transparency & Copy Box */}
       <div className="w-full max-w-sm flex items-center justify-between gap-2 p-2.5 rounded-2xl glass-input text-xs">
         <span className="truncate text-slate-300 font-mono select-all">
           {cardUrl}
@@ -88,7 +84,6 @@ export const QrCodeViewer = ({
         </button>
       </div>
 
-      {/* Download Action Button */}
       {showDownloadButton && (
         <button
           type="button"

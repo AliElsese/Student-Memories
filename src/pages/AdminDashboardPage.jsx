@@ -40,7 +40,6 @@ export const AdminDashboardPage = () => {
   const [selectedQrStudent, setSelectedQrStudent] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
-  // Protect route: redirect to login if not authenticated
   useEffect(() => {
     if (!isAdminAuthenticated()) {
       navigate('/admin/login', { replace: true });
@@ -95,12 +94,10 @@ export const AdminDashboardPage = () => {
     }
   };
 
-  // Extract unique groups for filtering
   const uniqueGroups = Array.from(
     new Set(students.map((s) => s.group_code).filter(Boolean))
   );
 
-  // Filter and search logic
   const filteredStudents = students.filter((s) => {
     const matchesSearch =
       (s.full_name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -114,7 +111,6 @@ export const AdminDashboardPage = () => {
     return matchesSearch && matchesGroup;
   });
 
-  // Calculate statistics
   const totalStudents = students.length;
   const totalBatches = uniqueGroups.length;
   const totalMessages = students.reduce(
@@ -138,7 +134,6 @@ export const AdminDashboardPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Top Header & Admin Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
         <div>
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-xs font-semibold text-purple-300 mb-2">
@@ -172,7 +167,6 @@ export const AdminDashboardPage = () => {
         </div>
       </div>
 
-      {/* KPI Stats Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
         <div className="glass-card rounded-3xl p-5 flex items-center gap-4 border border-white/10">
           <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0">
@@ -217,7 +211,6 @@ export const AdminDashboardPage = () => {
         </div>
       </div>
 
-      {/* Filter & Search Bar */}
       <div className="glass-card rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-white/10">
         <div className="relative w-full sm:max-w-md">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 rtl:left-auto rtl:right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -255,7 +248,6 @@ export const AdminDashboardPage = () => {
         </div>
       </div>
 
-      {/* Main Student Data Table */}
       {loading ? (
         <div className="py-20">
           <LoadingSpinner label={t('loading')} size="large" />
@@ -289,7 +281,6 @@ export const AdminDashboardPage = () => {
                       key={student.id}
                       className="hover:bg-white/[0.04] transition-colors"
                     >
-                      {/* Student Identity */}
                       <td className="p-4 pl-6 rtl:pl-4 rtl:pr-6">
                         <div className="flex items-center gap-3">
                           <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-slate-900 border border-white/15 shrink-0 shadow-md">
@@ -324,7 +315,6 @@ export const AdminDashboardPage = () => {
                         </div>
                       </td>
 
-                      {/* Group & Code */}
                       <td className="p-4">
                         <div className="flex flex-col gap-1">
                           <span className="font-semibold text-slate-200 text-xs">
@@ -336,7 +326,6 @@ export const AdminDashboardPage = () => {
                         </div>
                       </td>
 
-                      {/* Course Dates */}
                       <td className="p-4">
                         <div className="flex flex-col text-xs text-slate-300 gap-0.5">
                           <span className="text-slate-400 text-[11px]">
@@ -348,7 +337,6 @@ export const AdminDashboardPage = () => {
                         </div>
                       </td>
 
-                      {/* 6-Digit PIN (Super Admin Inspection) */}
                       <td className="p-4">
                         <div className="flex items-center gap-2">
                           <span className="px-2.5 py-1 rounded-lg bg-slate-900/80 font-mono font-bold text-amber-300 border border-white/10 text-xs tracking-wider">
@@ -369,7 +357,6 @@ export const AdminDashboardPage = () => {
                         </div>
                       </td>
 
-                      {/* Secret Messages Count */}
                       <td className="p-4 text-center">
                         <Link
                           to={`/messages/${student.id}`}
@@ -381,7 +368,6 @@ export const AdminDashboardPage = () => {
                         </Link>
                       </td>
 
-                      {/* Printable QR Code Preview & Instant Download */}
                       <td className="p-4 text-center">
                         <div className="inline-flex items-center gap-2">
                           <button
@@ -411,7 +397,6 @@ export const AdminDashboardPage = () => {
                         </div>
                       </td>
 
-                      {/* Actions */}
                       <td className="p-4 pr-6 rtl:pr-4 rtl:pl-6 text-center">
                         <div className="inline-flex items-center gap-2">
                           <Link
@@ -444,7 +429,6 @@ export const AdminDashboardPage = () => {
         </div>
       )}
 
-      {/* QR Code Modal for Selected Student */}
       {selectedQrStudent && (
         <Modal
           isOpen={Boolean(selectedQrStudent)}

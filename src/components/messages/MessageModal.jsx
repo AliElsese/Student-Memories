@@ -46,7 +46,6 @@ export const MessageModal = ({
           origin: { y: 0.7 },
         });
       } catch {
-        // Confetti fallback
       }
     } catch (err) {
       console.error('Error sending message:', err);
@@ -98,7 +97,6 @@ export const MessageModal = ({
         </div>
       ) : (
         <form onSubmit={handleSend} className="flex flex-col gap-4">
-          {/* Recipient Profile Card Preview */}
           <div className="flex items-center gap-3 p-3 rounded-2xl glass-card border border-white/10">
             <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-900 border border-white/15 shrink-0">
               <img
@@ -118,13 +116,11 @@ export const MessageModal = ({
             </div>
           </div>
 
-          {/* Anonymous Disclaimer */}
           <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-[11px] text-purple-200">
             <ShieldCheck className="w-4 h-4 text-purple-400 shrink-0" />
             <span>{t('anonymousNotice')}</span>
           </div>
 
-          {/* Chat-inspired Textarea */}
           <div className="relative">
             <textarea
               rows={5}
@@ -138,7 +134,6 @@ export const MessageModal = ({
               }`}
             />
 
-            {/* Character Counter */}
             <div className="flex items-center justify-end mt-1 px-1">
               <span
                 className={`text-[11px] font-mono ${
@@ -161,7 +156,6 @@ export const MessageModal = ({
             </p>
           )}
 
-          {/* Action Buttons */}
           <div className="flex items-center gap-3 pt-2">
             <button
               type="button"

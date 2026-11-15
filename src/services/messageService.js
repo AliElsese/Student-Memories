@@ -8,7 +8,6 @@ const getMockMessages = () => {
     try {
       return JSON.parse(data);
     } catch {
-      // fallback
     }
   }
   return [];
@@ -18,10 +17,6 @@ const saveMockMessages = (messages) => {
   localStorage.setItem(MOCK_MESSAGES_STORAGE_KEY, JSON.stringify(messages));
 };
 
-/**
- * Send an anonymous message to a student
- * Strictly does not record any sender identity or IP
- */
 export const sendAnonymousMessage = async ({ recipientStudentId, messageText }) => {
   if (!recipientStudentId) throw new Error('Recipient student ID is required');
   const cleanText = (messageText || '').trim();
@@ -53,7 +48,6 @@ export const sendAnonymousMessage = async ({ recipientStudentId, messageText }) 
     return data;
   }
 
-  // Mock implementation
   const mockMessages = getMockMessages();
   const newMessage = {
     id: `msg-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -67,14 +61,10 @@ export const sendAnonymousMessage = async ({ recipientStudentId, messageText }) 
   return newMessage;
 };
 
-/**
- * Retrieve messages for a recipient student, ordered newest first
- */
 export const getMessagesForStudent = async (studentId, pinCode = '') => {
   if (!studentId) return [];
 
   if (isSupabaseConfigured && supabase) {
-    // If PIN is provided, try RPC get_verified_messages first
     if (pinCode) {
       try {
         const { data: rpcData, error: rpcError } = await supabase.rpc('get_verified_messages', {
@@ -86,7 +76,6 @@ export const getMessagesForStudent = async (studentId, pinCode = '') => {
           return rpcData;
         }
       } catch {
-        // Fall back to standard query if RPC was not created
       }
     }
 
@@ -103,7 +92,6 @@ export const getMessagesForStudent = async (studentId, pinCode = '') => {
     return data || [];
   }
 
-  // Mock implementation
   const mockMessages = getMockMessages();
   return mockMessages
     .filter((m) => m.recipient_student_id === studentId)
